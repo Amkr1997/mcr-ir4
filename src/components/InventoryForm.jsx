@@ -1,5 +1,4 @@
 import { useState } from "react";
-import DisplayForm from "./DisplayForm";
 
 const InventoryForm = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +14,7 @@ const InventoryForm = () => {
   const [checkbox, setCheckbox] = useState([]);
   const [condition, setCondition] = useState("");
   const [showCondition, setShowCondition] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
 
   const handleFormInps = (e) => {
     const { name, value, checked } = e.target;
@@ -42,6 +42,8 @@ const InventoryForm = () => {
     console.log(formData);
     console.log(condition);
     console.log(checkbox);
+
+    setShowDetails(true);
 
     setFormData({
       prodName: "",
@@ -206,11 +208,30 @@ const InventoryForm = () => {
         </form>
       </section>
 
-      <DisplayForm
-        formData={formData}
-        condition={condition}
-        checkbox={checkbox}
-      />
+      {showDetails && (
+        <section className="container text-light px-1 py-4">
+          <h2 className="py-4">Submitted Details:</h2>
+          <p>Product Name: {formData.prodName}</p>
+          <p>Quantity: {formData.quantity}</p>
+          <p>Category: {formData.category}</p>
+          <p>Condition: {condition}</p>
+          <p>WaterProof: {checkbox.includes("waterProof") ? "Yes" : "No"}</p>
+          <p>
+            Features:{" "}
+            {checkbox.includes("Lightweight") || checkbox.includes("Durable")
+              ? checkbox.join(", ")
+              : "none"}
+          </p>
+          <p>Date of storage: {formData.dateOfStorage}</p>
+          <p>Storage Number: {formData.storageUnitNumber}</p>
+          <p>Unit Cost: ${formData.unitCost}</p>
+          <p>Vendor Name: {formData.vendorName}</p>
+          <p>
+            Total Cost: $
+            {Number(formData.unitCost) * Number(formData.quantity).toFixed(2)}
+          </p>
+        </section>
+      )}
     </>
   );
 };
